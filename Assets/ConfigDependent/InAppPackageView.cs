@@ -1,14 +1,17 @@
 using TMPro;
 using UnityEngine;
 
-public class InAppPackageView : MonoBehaviour
+namespace ConfigDependent
 {
-    [SerializeField] private float price;
-
-    [SerializeField] private TextMeshProUGUI textMesh;
-
-    private void Start()
+    public class InAppPackageView : MonoBehaviour
     {
-        textMesh.text = string.Format(textMesh.text, price.ToString());
+        [SerializeField] private TextMeshProUGUI textMesh;
+    
+        public int Price { get; set; }
+
+        private void Start()
+        {
+            textMesh.text = string.Format(textMesh.text, Price.ToString());
+        }
     }
 }

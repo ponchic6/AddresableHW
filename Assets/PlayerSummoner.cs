@@ -1,14 +1,22 @@
+using Factories;
 using UnityEngine;
+using Zenject;
 
 public class PlayerSummoner : MonoBehaviour
 {
-    [SerializeField] private Player prefab;
-
+    private IPlayerFactory _playerFactory;
+    
+    [Inject]
+    public void Constructor(IPlayerFactory playerFactory)
+    {
+        _playerFactory = playerFactory;
+    }
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Instantiate(prefab);
+            _playerFactory.CreatePlayer();
         }
     }
 }

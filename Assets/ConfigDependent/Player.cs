@@ -1,13 +1,34 @@
+using Services;
 using UnityEngine;
+using Zenject;
 
-public class Player : MonoBehaviour
+namespace ConfigDependent
 {
-    [SerializeField, Range(0f, 100f)] private float startingHP;
-    [SerializeField, Range(0f, 10f)] private float startingSpeed;
-    [SerializeField, Range(0f, 1f)] private float startingAttack;
-
-    private void Update()
+    public class Player : MonoBehaviour
     {
-        transform.position += transform.forward * startingSpeed * Time.deltaTime;
+        private float _startingHp;
+        private float _startingSpeed;
+        private float _startingAttack;
+    
+        private IAssetProvider _assetProvider;
+
+        [Inject]
+        public void Constructor(IAssetProvider assetProvider)
+        {
+            _assetProvider = assetProvider;
+            FillStartParameters();
+        }
+
+        private void Update()
+        {
+            transform.position += transform.forward * _startingSpeed * Time.deltaTime;
+        }
+
+        private void FillStartParameters()
+        {
+            _startingHp = _assetProvider.PlayerConfig.StartingHp;
+            _startingSpeed = _assetProvider.PlayerConfig.StartingSpeed;
+            _startingAttack = _assetProvider.PlayerConfig.StartingAttack;
+        }
     }
 }
